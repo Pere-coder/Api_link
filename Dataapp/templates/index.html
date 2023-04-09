@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<div class='container'>
+<h1>List of Names</h1>
+<div class='cont'>
+<ul id="nameList"></ul>
+<ul id="lastList"></ul>
+</div>
+</div>
+
+<style>
+
+
+.container {
+
+    text-align: center;
+    font-family: 'Sansserif', sans-serif;
+}
+
+
+     h1 {
+        background-color: gray;
+        border-radius: 20px;
+        border-bottom: 5px redpos solid;
+        padding: 10px;
+        color: white;
+    }
+
+
+.cont {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    
+    
+
+
+}
+
+
+
+#nameList {
+    width: 400px; 
+    padding: 20px;
+    border-style: solid;
+    border-color: #B6C7D6;
+    border-radius: 20px;
+    background-color: #EAF0F6;
+    list-style-type: none;
+   
+}
+
+#lastList {
+    width: 400px;
+    padding: 20px;
+    border-style: solid;
+    border-color: #B6C7D6;
+    border-radius: 20px;
+    background-color: #EAF0F6;
+    list-style-type: none;
+    align-items: center;
+   
+} 
+
+
+
+</style>
+
+
+<script>
+   
+ async function fetchnames() {
+        const response = await fetch( "http://127.0.0.1:8000/names/")
+        if (!response.ok){
+            const message = `An error has occurred: ${response.status}`
+            document.getElementById("nameList").innerHTML = message
+        }
+        const data = await response.json();
+        const nameList = document.getElementById("nameList")
+        const lastList = document.getElementById("lastList")
+        const nameItems = data.map(name => `<li>${name.first_name}</li>`);
+        const lastItems = data.map(name => `<li>${name.last_name}</li>`);
+        nameList.innerHTML = nameItems.join('');
+        lastList.innerHTML = lastItems.join('');
+        
+        
+    }
+   
+
+    async function addName(firstName, lastName) {
+        const url = "http://127.0.0.1:8000/names/";
+        const data = {
+            first_name: firstName,
+            last_name: lastName
+            
+        };
+
+        const options  = {
+            method : "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        };
+
+        const response = await fetch(url, options); 
+        const result = await response.json();
+        console.log(result);
+    }
+
+
+    async function addAndDisplayNames(firstName,  lastName){
+        await addName(firstName, lastName);
+        await fetchnames();
+
+    }
+    addAndDisplayNames("John", "Doe");
+
+
+
+   
+</script>

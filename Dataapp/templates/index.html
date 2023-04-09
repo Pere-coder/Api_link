@@ -5,7 +5,21 @@
 <div class='cont'>
 <ul id="nameList"></ul>
 <ul id="lastList"></ul>
+
+<div class="pos">
+    <form id = 'my-form'> 
+    <label>first name</label>
+    <input type="text" name='firstName'>
+    <br>
+    <label>last name</label>
+    <input type="text" name='lastName'>
+    <br>
+    <button>Submit</button>
+    </form>
 </div>
+</div>
+
+
 </div>
 
 <style>
@@ -32,10 +46,24 @@
     flex-wrap: wrap;
     text-align: center;
     justify-content: center;
+    gap: 10%;
     
     
 
 
+}
+
+.pos {
+    color:#B6C7D6;;
+    justify-content: center;
+    width: 400px; 
+    padding: 20px;
+    border-style: solid;
+    border-color: #B6C7D6;
+    border-radius: 20px;
+    background-color: #EAF0F6;
+   
+   
 }
 
 
@@ -99,11 +127,13 @@
         const options  = {
             method : "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-CSRFToken": '{{csrf_token}}' 
+               
             },
             body: JSON.stringify(data)
         };
-
+        
         const response = await fetch(url, options); 
         const result = await response.json();
         console.log(result);
@@ -115,7 +145,19 @@
         await fetchnames();
 
     }
-    addAndDisplayNames("John", "Doe");
+
+
+    const form  = document.getElementById('my-form');
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+        addAndDisplayNames(firstName, lastName);
+    
+
+    })
+    
 
 
 

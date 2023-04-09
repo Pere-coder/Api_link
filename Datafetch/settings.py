@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+
+
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -56,9 +59,7 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-]
+
 ROOT_URLCONF = 'Datafetch.urls'
 
 TEMPLATES = [
